@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
-import "./App.css";
-import { Button } from "react-bootstrap";
-import { Note } from "./models/note";
+
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { Note as NoteModel } from "./models/note";
+import Note from "./components/Note";
+import styles from "./styles/NotesPage.module.css";
 
 function App() {
-    const [notes, setNotes] = useState<Note[]>([]);
+    const [notes, setNotes] = useState<NoteModel[]>([]);
     useEffect(() => {
         async function loadNotes() {
             try {
@@ -23,7 +25,17 @@ function App() {
         loadNotes();
     }, []);
 
-    return <div className="App">{JSON.stringify(notes)}</div>;
+    return (
+        <Container>
+            <Row xs={1} md={2} xl={3} className="g-4">
+                {notes.map((eachNote) => (
+                    <Col key={eachNote._id}>
+                        <Note note={eachNote} className={styles.note} />
+                    </Col>
+                ))}
+            </Row>
+        </Container>
+    );
 }
 
 export default App;
