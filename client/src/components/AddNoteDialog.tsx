@@ -33,19 +33,22 @@ const AddNoteDialog = ({ onDismiss, onNoteSaved }: AddNoteDialogProps) => {
             </Modal.Header>
 
             <Modal.Body>
-                <Form id="addNoteForm">
-                    <Form.Group
-                        className="mb-3"
-                        onSubmit={handleSubmit(onSubmit)}>
+                <Form
+                    // id is required since the submit button is outside of <form></form>
+                    id="addNoteForm"
+                    onSubmit={handleSubmit(onSubmit)}>
+                    <Form.Group className="mb-3">
                         <Form.Label>Title</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Title"
+                            // validation
                             isInvalid={!!errors.title}
                             {...register("title", {
                                 required: "title required",
                             })}
                         />
+                        {/* warning message if error occrrued */}
                         <Form.Control.Feedback type="invalid">
                             {errors.title?.message}
                         </Form.Control.Feedback>
@@ -55,10 +58,12 @@ const AddNoteDialog = ({ onDismiss, onNoteSaved }: AddNoteDialogProps) => {
                         <Form.Control
                             as="textarea"
                             placeholder="Text"
+                            rows={5}
+                            // validation
                             isInvalid={!!errors.text}
                             {...register("text", { required: "text required" })}
-                            rows={5}
                         />
+                        {/* warning message if error occrrued */}
                         <Form.Control.Feedback type="invalid">
                             {errors.text?.message}
                         </Form.Control.Feedback>
@@ -66,7 +71,12 @@ const AddNoteDialog = ({ onDismiss, onNoteSaved }: AddNoteDialogProps) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button type="submit" form="addNoteForm">
+                <Button
+                    // type="submit" is required since the button is not in <form></form>
+                    type="submit"
+                    // need to specific form="form_id"
+                    form="addNoteForm"
+                    disabled={isSubmitting}>
                     Save Note
                 </Button>
             </Modal.Footer>
