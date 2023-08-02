@@ -6,7 +6,7 @@ import createHttpError, { isHttpError } from "http-errors"; // For handling type
 
 const app = express();
 
-app.use(morgan("dev")); // to have info log. For example "GET /api/notes/64c8518b37a4aed48d2c4a5f 200 18.032 ms - 73"
+app.use(morgan("dev")); // to have info log when there is any request. For example, "GET /api/notes/64c8518b37a4aed48d2c4a5f 200 18.032 ms - 73"
 app.use(express.json());
 
 /* ROUTES */

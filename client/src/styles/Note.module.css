@@ -3,7 +3,9 @@
 }
 
 .cardBody {
+    /* Make anything beyond the element hide */
     overflow: hidden;
+    /* create gradient effect */
     mask-image: linear-gradient(180deg, #000000 60%, transparent);
 }
 

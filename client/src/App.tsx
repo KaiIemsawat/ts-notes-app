@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
-import logo from "./logo.svg";
-
+import * as NotesAPI from "./network/notes_api"; // <-- custom function to handle error
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Note as NoteModel } from "./models/note";
 import Note from "./components/Note";
 import styles from "./styles/NotesPage.module.css";
+import AddNoteDialog from "./components/AddNoteDialog";
 
 function App() {
     const [notes, setNotes] = useState<NoteModel[]>([]);
+
+    const [showAddNoteDialog, setShowAddNoteDialog] = useState(false);
     useEffect(() => {
         async function loadNotes() {
             try {
                 // async/await can't be directly in useEffect. But we can create empty async function to contain await
-                const response = await fetch("/api/notes", {
-                    method: "GET",
-                });
-                const notes = await response.json();
+                const notes = await NotesAPI.fetchNotes();
                 setNotes(notes);
             } catch (error) {
                 console.log(error);
@@ -27,6 +26,9 @@ function App() {
 
     return (
         <Container>
+            <Button onClick={() => setShowAddNoteDialog(true)}>
+                Add new note
+            </Button>
             <Row xs={1} md={2} xl={3} className="g-4">
                 {notes.map((eachNote) => (
                     <Col key={eachNote._id}>
@@ -34,6 +36,9 @@ function App() {
                     </Col>
                 ))}
             </Row>
+            {showAddNoteDialog && (
+                <AddNoteDialog onDismiss={() => setShowAddNoteDialog(false)} />
+            )}
         </Container>
     );
 }
