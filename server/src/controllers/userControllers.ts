@@ -55,6 +55,12 @@ export const signUp: RequestHandler<
             password: passwordHased,
         });
 
+        // log user in once thy register
+        // need  npm i express-session, npm i -D @types/express-session, npm i connect-mongo
+        // need @types directory along with session.d.ts
+        // need config in tsconfig.json ---> typeRoots, ts-node
+        req.session.userId = newUser._id;
+
         res.status(201).json(newUser);
     } catch (error) {
         next(error);
