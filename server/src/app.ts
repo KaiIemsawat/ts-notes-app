@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import noteRoutes from "./routes/noteRoutes";
+import userRoutes from "./routes/userRoutes";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors"; // For handling types of error
 
@@ -11,6 +12,7 @@ app.use(express.json());
 
 /* ROUTES */
 app.use("/api/notes", noteRoutes);
+app.use("/api/users", userRoutes);
 
 // ! ROUTE ERROR HANDLER -- put this just before ERROR HANDLER block
 app.use((req, res, next) => {

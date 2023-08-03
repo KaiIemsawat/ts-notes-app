@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as NotesAPI from "./network/notes_api"; // <-- custom function to handle error
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import { Note as NoteModel } from "./models/note";
 import Note from "./components/Note";
 import styles from "./styles/NotesPage.module.css";
@@ -10,6 +10,8 @@ import IconFilePlus from "./icons/IconFilePlus";
 
 function App() {
     const [notes, setNotes] = useState<NoteModel[]>([]);
+    const [notesLoading, setNotesLoading] = useState(true);
+    const [showNotesLoadingError, setShowNotesLoadingError] = useState(false);
 
     const [showAddNoteDialog, setShowAddNoteDialog] = useState(false);
     const [noteToEdit, setNoteToEdit] = useState<NoteModel | null>(null); // useState<NoteModel|null> <-- type could be either NoteModel or null
@@ -17,12 +19,16 @@ function App() {
     useEffect(() => {
         async function loadNotes() {
             try {
+                setShowNotesLoadingError(false);
+                setNotesLoading(true);
                 // async/await can't be directly in useEffect. But we can create empty async function to contain await
                 const notes = await NotesAPI.fetchNotes();
                 setNotes(notes);
             } catch (error) {
                 console.log(error);
-                alert(error);
+                setShowNotesLoadingError(true);
+            } finally {
+                setNotesLoading(false);
             }
         }
         loadNotes();
@@ -40,26 +46,43 @@ function App() {
         }
     }
 
+    const notesGrid = (
+        <Row xs={1} md={2} xl={3} className={`g-4 ${styles.noteGrid}`}>
+            {notes.map((eachNote) => (
+                <Col key={eachNote._id}>
+                    <Note
+                        note={eachNote}
+                        className={styles.note}
+                        onNoteClicked={setNoteToEdit}
+                        onDeleteNoteClick={deleteNote}
+                    />
+                </Col>
+            ))}
+        </Row>
+    );
+
     return (
-        <Container>
+        <Container className={styles.notesPage}>
             <Button
                 className={`my-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
                 onClick={() => setShowAddNoteDialog(true)}>
                 <IconFilePlus />
                 Add new note
             </Button>
-            <Row xs={1} md={2} xl={3} className="g-4">
-                {notes.map((eachNote) => (
-                    <Col key={eachNote._id}>
-                        <Note
-                            note={eachNote}
-                            className={styles.note}
-                            onNoteClicked={setNoteToEdit}
-                            onDeleteNoteClick={deleteNote}
-                        />
-                    </Col>
-                ))}
-            </Row>
+            {notesLoading && <Spinner animation="border" variant="primary" />}
+            {showNotesLoadingError && (
+                <p>Something went wrong. Try refreshing the page</p>
+            )}
+            {!notesLoading && !showNotesLoadingError && (
+                // Trick !! we can make use of <></> to be able to use another pair of {} inside {}
+                <>
+                    {notes.length > 0 ? (
+                        notesGrid
+                    ) : (
+                        <p>The note list is empty</p>
+                    )}
+                </>
+            )}
             {showAddNoteDialog && (
                 <AddEditNoteDialog
                     onDismiss={() => setShowAddNoteDialog(false)}
