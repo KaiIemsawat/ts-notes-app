@@ -9,6 +9,7 @@ import AddEditNoteDialog from "./components/AddEditNoteDialog";
 import IconFilePlus from "./icons/IconFilePlus";
 import SignUpModal from "./components/SignUpModal";
 import LoginModal from "./components/LoginModal";
+import NavBar from "./components/NavBar";
 
 function App() {
     const [notes, setNotes] = useState<NoteModel[]>([]);
@@ -64,62 +65,75 @@ function App() {
     );
 
     return (
-        <Container className={styles.notesPage}>
-            <Button
-                className={`my-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
-                onClick={() => setShowAddNoteDialog(true)}>
-                <IconFilePlus />
-                Add new note
-            </Button>
-            {notesLoading && <Spinner animation="border" variant="primary" />}
-            {showNotesLoadingError && (
-                <p>Something went wrong. Try refreshing the page</p>
-            )}
-            {!notesLoading && !showNotesLoadingError && (
-                // Trick !! we can make use of <></> to be able to use another pair of {} inside {}
-                <>
-                    {notes.length > 0 ? (
-                        notesGrid
-                    ) : (
-                        <p>The note list is empty</p>
-                    )}
-                </>
-            )}
-            {showAddNoteDialog && (
-                <AddEditNoteDialog
-                    onDismiss={() => setShowAddNoteDialog(false)}
-                    onNoteSaved={(newNote) => {
-                        setNotes([...notes, newNote]);
-                        setShowAddNoteDialog(false);
-                    }}
-                />
-            )}
-            {noteToEdit && (
-                <AddEditNoteDialog
-                    noteToEdit={noteToEdit}
-                    onDismiss={() => setNoteToEdit(null)}
-                    onNoteSaved={(updateNote) => {
-                        setNotes(
-                            notes.map((existingNotes) =>
-                                existingNotes._id === updateNote._id
-                                    ? updateNote
-                                    : existingNotes
-                            )
-                        );
-                        setNoteToEdit(null);
-                    }}
-                />
-            )}
-            {false && (
-                <SignUpModal
-                    onDismiss={() => {}}
-                    onSignUpSuccessful={() => {}}
-                />
-            )}
-            {false && (
-                <LoginModal onDismis={() => {}} onLoginSuccessful={() => {}} />
-            )}
-        </Container>
+        <div>
+            <NavBar
+                loggedInUser={null}
+                onLoginClicked={() => {}}
+                onSignUpClicked={() => {}}
+                onLogoutSuccessful={() => {}}
+            />
+            <Container className={styles.notesPage}>
+                <Button
+                    className={`my-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
+                    onClick={() => setShowAddNoteDialog(true)}>
+                    <IconFilePlus />
+                    Add new note
+                </Button>
+                {notesLoading && (
+                    <Spinner animation="border" variant="primary" />
+                )}
+                {showNotesLoadingError && (
+                    <p>Something went wrong. Try refreshing the page</p>
+                )}
+                {!notesLoading && !showNotesLoadingError && (
+                    // Trick !! we can make use of <></> to be able to use another pair of {} inside {}
+                    <>
+                        {notes.length > 0 ? (
+                            notesGrid
+                        ) : (
+                            <p>The note list is empty</p>
+                        )}
+                    </>
+                )}
+                {showAddNoteDialog && (
+                    <AddEditNoteDialog
+                        onDismiss={() => setShowAddNoteDialog(false)}
+                        onNoteSaved={(newNote) => {
+                            setNotes([...notes, newNote]);
+                            setShowAddNoteDialog(false);
+                        }}
+                    />
+                )}
+                {noteToEdit && (
+                    <AddEditNoteDialog
+                        noteToEdit={noteToEdit}
+                        onDismiss={() => setNoteToEdit(null)}
+                        onNoteSaved={(updateNote) => {
+                            setNotes(
+                                notes.map((existingNotes) =>
+                                    existingNotes._id === updateNote._id
+                                        ? updateNote
+                                        : existingNotes
+                                )
+                            );
+                            setNoteToEdit(null);
+                        }}
+                    />
+                )}
+                {false && (
+                    <SignUpModal
+                        onDismiss={() => {}}
+                        onSignUpSuccessful={() => {}}
+                    />
+                )}
+                {false && (
+                    <LoginModal
+                        onDismis={() => {}}
+                        onLoginSuccessful={() => {}}
+                    />
+                )}
+            </Container>
+        </div>
     );
 }
 
