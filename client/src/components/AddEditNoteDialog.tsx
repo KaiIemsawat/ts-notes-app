@@ -3,6 +3,7 @@ import { Note } from "../models/note";
 import { NoteInput } from "../network/notes_api";
 import { useForm } from "react-hook-form";
 import * as NotesAPI from "../network/notes_api";
+import TextInputField from "./form/TextInputField";
 
 interface AddEditNoteDialogProps {
     noteToEdit?: Note;
@@ -54,37 +55,25 @@ const AddEditNoteDialog = ({
                     // id is required since the submit button is outside of <form></form>
                     id="addEditNoteForm"
                     onSubmit={handleSubmit(onSubmit)}>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Title</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Title"
-                            // validation
-                            isInvalid={!!errors.title}
-                            {...register("title", {
-                                required: "title required",
-                            })}
-                        />
-                        {/* warning message if error occrrued */}
-                        <Form.Control.Feedback type="invalid">
-                            {errors.title?.message}
-                        </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Text</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            placeholder="Text"
-                            rows={5}
-                            // validation
-                            isInvalid={!!errors.text}
-                            {...register("text", { required: "text required" })}
-                        />
-                        {/* warning message if error occrrued */}
-                        <Form.Control.Feedback type="invalid">
-                            {errors.text?.message}
-                        </Form.Control.Feedback>
-                    </Form.Group>
+                    <TextInputField
+                        name="title"
+                        label="Title"
+                        type="text"
+                        placeholder="please input title here"
+                        register={register}
+                        registerOption={{ required: "Required" }}
+                        error={errors.title}
+                    />
+                    <TextInputField
+                        name="text"
+                        label="Text"
+                        as="textarea"
+                        rows="5"
+                        placeholder="please input text here"
+                        register={register}
+                        registerOption={{ required: "Required" }}
+                        error={errors.text}
+                    />
                 </Form>
             </Modal.Body>
             <Modal.Footer>

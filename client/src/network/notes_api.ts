@@ -1,4 +1,5 @@
 import { Note } from "../models/note";
+import { User } from "../models/user";
 
 async function fetchData(input: RequestInfo, init?: RequestInit) {
     const response = await fetch(input, init);
@@ -11,6 +12,50 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
     }
 }
 
+export async function getLoggedInUser(): Promise<User> {
+    const response = await fetchData("/api/users", { method: "GET" });
+    return response.json();
+}
+
+// ! SIGN UP
+export interface SignUpCredentials {
+    username: string;
+    email: string;
+    password: string;
+}
+export async function signUp(credentials: SignUpCredentials): Promise<User> {
+    const response = await fetchData("/api/users/signup", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+    });
+    return response.json();
+}
+
+// ! SIGN IN
+export interface LoginCredentials {
+    username: string;
+    email: string;
+}
+export async function login(credentials: LoginCredentials): Promise<User> {
+    const response = await fetchData("/api/users/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+    });
+    return response.json();
+}
+
+// ! LOGOUT
+export async function logout() {
+    await fetchData("/api/users/logout", { method: "POST" });
+}
+
+// ----------------- NOTES ----------------
 export async function fetchNotes(): Promise<Note[]> {
     // async/await can't be directly in useEffect. But we can create empty async function to contain await
     const response = await fetchData("/api/notes", { method: "GET" });
