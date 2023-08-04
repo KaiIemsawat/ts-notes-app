@@ -65,7 +65,7 @@ const NotesPageLoggedInView = () => {
     return (
         <>
             <Button
-                className={`my-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
+                className={`mb-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
                 onClick={() => setShowAddNoteDialog(true)}>
                 <IconFilePlus />
                 Add new note
