@@ -8,6 +8,7 @@ import styleUtils from "./styles/Utils.module.css";
 import AddEditNoteDialog from "./components/AddEditNoteDialog";
 import IconFilePlus from "./icons/IconFilePlus";
 import SignUpModal from "./components/SignUpModal";
+import LoginModal from "./components/LoginModal";
 
 function App() {
     const [notes, setNotes] = useState<NoteModel[]>([]);
@@ -109,11 +110,14 @@ function App() {
                     }}
                 />
             )}
-            {true && (
+            {false && (
                 <SignUpModal
                     onDismiss={() => {}}
                     onSignUpSuccessful={() => {}}
                 />
+            )}
+            {false && (
+                <LoginModal onDismis={() => {}} onLoginSuccessful={() => {}} />
             )}
         </Container>
     );

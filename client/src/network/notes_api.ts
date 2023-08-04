@@ -37,7 +37,7 @@ export async function signUp(credentials: SignUpCredentials): Promise<User> {
 // ! SIGN IN
 export interface LoginCredentials {
     username: string;
-    email: string;
+    password: string;
 }
 export async function login(credentials: LoginCredentials): Promise<User> {
     const response = await fetchData("/api/users/login", {
