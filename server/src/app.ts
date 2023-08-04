@@ -7,6 +7,7 @@ import createHttpError, { isHttpError } from "http-errors"; // For handling type
 import session from "express-session";
 import env from "./utils/validateEnv";
 import MongoStore from "connect-mongo";
+import { requiresAuth } from "./middleware/auth";
 
 const app = express();
 
@@ -30,8 +31,9 @@ app.use(
 );
 
 /* ROUTES */
-app.use("/api/notes", noteRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/notes", requiresAuth, noteRoutes);
+// app.use("/api/notes", noteRoutes);
 
 // ! ROUTE ERROR HANDLER -- put this just before ERROR HANDLER block
 app.use((req, res, next) => {
@@ -41,7 +43,7 @@ app.use((req, res, next) => {
 // ! ERROR HANDLER -- put this block at the end -- need to give specific type
 app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
     console.error(error);
-    let errorMsg = "An error occurred at / root";
+    let errorMsg = "An error occurred";
     let statusCode = 500;
     if (isHttpError(error)) {
         statusCode = error.status;
