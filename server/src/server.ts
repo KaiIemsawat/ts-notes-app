@@ -3,8 +3,10 @@ import app from "./app";
 import mongoose from "mongoose";
 
 const port = process.env.PORT;
+const url = process.env.MONGO_URL as string;
+
 mongoose
-    .connect(process.env.MONGO_URL as string)
+    .connect(url)
     .then(() => {
         console.log(`Mongoose Connected -- !`);
     })
@@ -12,5 +14,5 @@ mongoose
 
 app.listen(port!, () => {
     // variable! <--- not in JS only ts -- telling the program that we know it might not exist but still do it
-    console.log(`Server launched on port --> ${port}`);
+    console.log(`Server launched on port ------> ${port}`);
 });
