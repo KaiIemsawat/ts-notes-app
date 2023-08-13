@@ -5,7 +5,7 @@ import userRoutes from "./routes/userRoutes";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors"; // For handling types of error
 import session from "express-session";
-import env from "./utils/validateEnv";
+// import env from "./utils/validateEnv";
 import MongoStore from "connect-mongo";
 import { requiresAuth } from "./middleware/auth";
 
@@ -25,7 +25,7 @@ app.use(
         },
         rolling: true, // <--- means that cookie will not expire if user is in the session before expirration time
         store: MongoStore.create({
-            mongoUrl: env.MONGO_URL,
+            mongoUrl: process.env.MONGO_URL as string,
         }),
     })
 );
