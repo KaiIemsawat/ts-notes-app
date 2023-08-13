@@ -17,7 +17,7 @@ app.use(express.json());
 // session() needs to be after express.json() but before routes
 app.use(
     session({
-        secret: env.SESSION_SECRET,
+        secret: process.env.SESSION_SECRET as string,
         resave: false,
         saveUninitialized: false,
         cookie: {
