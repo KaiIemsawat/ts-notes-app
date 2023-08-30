@@ -4,7 +4,7 @@
 
 ## About
 
-This is a part of my practice projects. The application allows users to register and login to see their own notes. The users will not be able to asscess everyone else's notes. The app is built with user friendly concept. So, it is very easy to access in any screen size.
+This is a part of my practice projects. The application allows users to register and login to see their own notes. The users will not be able to access everyone else's notes. The app is built with user friendly concept. So, it is very easy to access in any screen size.
 
 ## Links
 
